@@ -1,0 +1,63 @@
+provider "aws" { 
+access_key = "AKIAISGR4KDGT67CBRVA" 
+secret_key = "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" 
+region = "us-east-1" 
+}
+
+resource "aws_security_group" "default"{ 
+name="terraform-sg" 
+description="Created by terraform" 
+ingress{ 
+from_port = 22 
+to_port = 22 
+protocol= "tcp" 
+cidr_blocks = ["0.0.0.0/0"] 
+}
+ingress{ 
+from_port = 80 
+to_port = 80 
+protocol = "tcp" 
+cidr_blocks = ["0.0.0.0/0"] 
+}
+egress { 
+from_port = "0" 
+to_port = "0" 
+protocol = "-1" 
+#self = false
+cidr_blocks = ["0.0.0.0/0"] 
+}
+}
+
+
+
+resource "aws_instance" "example" { 
+connection={ 
+user="ubuntu" 
+private_key = "${file("/root/tf-codes/simple/ubuntu1.pem")}"
+}
+ami = "ami-cd0f5cb6" 
+instance_type = "t2.micro" 
+tags { 
+Name = "terraform-example" 
+}
+key_name = "ubuntu1"
+security_groups = ["${aws_security_group.default.name}"]
+provisioner "remote-exec" {
+inline=[ 
+"ping -c 10 8.8.8.8", 
+"sudo apt-get -y update", 
+"sudo apt-get -y install apache2", 
+"sudo service apache2 restart" 
+] 
+}
+}
+
+resource "aws_eip" "ip" { 
+instance = "${aws_instance.example.id}" 
+provisioner "local-exec" { 
+command = "echo ${aws_eip.ip.public_ip} > ip_address.txt" 
+
+}
+}
+
+
