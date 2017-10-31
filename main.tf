@@ -53,8 +53,11 @@ provisioner "remote-exec" {
 inline=[ 
 "ping -c 10 8.8.8.8", 
 "sudo apt-get -y update", 
-"sudo apt-get -y install apache2", 
-"sudo service apache2 restart" 
+"sudo apt-get -y install tomcat7 tomcat7-admin", 
+"sudo rm -f /etc/tomcat7/tomcat-users.xml", 
+"sudo wget https://raw.githubusercontent.com/bakuppus/samplejava/master/tomcat-users.xml -P /etc/tomcat7/", 
+
+  
 ] 
 }
 }
