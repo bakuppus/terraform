@@ -56,9 +56,8 @@ inline=[
 "sudo apt-get -y install tomcat7 tomcat7-admin", 
 "sudo rm -f /etc/tomcat7/tomcat-users.xml", 
 "sudo wget https://raw.githubusercontent.com/bakuppus/samplejava/master/tomcat-users.xml -P /etc/tomcat7/", 
-
-  
-] 
+"sudo service tomcat7 restart"
+ ] 
 }
 }
 
