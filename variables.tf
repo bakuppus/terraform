@@ -20,7 +20,7 @@ us-east-2="Ohio-Key"
 } 
 
 variable "aws_key_path"{
-default = "/root/tf-codes/simple/ubuntu1.pem"
+default = "/var/lib/jenkins/workspace/terraform-tomcat/terraform/ubuntu1.pem"
 }
 
 
